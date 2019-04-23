@@ -19,6 +19,7 @@ int main(void) {
     scanf("%d", &OPTION);
 
     read_extract_sort_data("backup_treated_data.txt", PAGINATION_SIZE, OPTION);
+    external_merge_sort("output.txt", PAGINATION_SIZE, OPTION);
 
     printf("File sorted sucessfully!");
 

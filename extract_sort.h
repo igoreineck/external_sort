@@ -11,5 +11,17 @@ struct lineContent {
     int money_raised;
 };
 
+struct file {
+    FILE *f;
+    int position;
+    int MAX_POSITION;
+    struct lineContent *buffer;
+};
+
 void _sort_buffer(struct lineContent *buffer, size_t buffer_length, int sort_option);
 void read_extract_sort_data(char *name, int pagination, int sort_option);
+void set_buffer(struct file *file, int K);
+int search_lowest(struct file *file, int file_qty, int K, struct lineContent *lowest, int sort_option);
+void save_file(char *name, struct lineContent *V, int length);
+void merge(char *name, int file_qty, int K, int sort_option);
+void external_merge_sort(char *name, int pagination, int sort_option);
