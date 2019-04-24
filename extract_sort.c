@@ -1,3 +1,4 @@
+#include <math.h>
 #include "extract_sort.h"
 #include "comparison.h"
 
@@ -148,33 +149,35 @@ int search_lowest(struct file *file, int file_qty, int K, struct lineContent *lo
     int index = -1;
     
     for (int i = 0; i < file_qty; i++) {
-        if (file[i].position == file[i].MAX_POSITION || file[i].position < file[i].MAX_POSITION) {
+        if (file[i].position < file[i].MAX_POSITION) {
+        // if (file[i].position == file[i].MAX_POSITION || file[i].position < file[i].MAX_POSITION) {
+
             if (index == -1) {
                 index = i;
             } else {
                 switch (sort_option) {
                     case 1:
-                        if (strcmp(file[i].buffer[file[i].position].team_a, file[i].buffer[file[i].position].team_a))
+                        if (strcmp(file[i].buffer[file[i].position].team_a, file[index].buffer[file[index].position].team_a))
                             index = i;
                         break;
                     case 2:
-                        if (strcmp(file[i].buffer[file[i].position].team_b, file[i].buffer[file[i].position].team_b))
+                        if (strcmp(file[i].buffer[file[i].position].team_b, file[index].buffer[file[index].position].team_b))
                             index = i;
                         break;
                     case 3:
-                        if (file[i].buffer[file[i].position].score_a < file[i].buffer[file[i].position].score_a)
+                        if (file[i].buffer[file[i].position].score_a < file[index].buffer[file[index].position].score_a)
                             index = i;
                         break;
                     case 4:
-                        if (file[i].buffer[file[i].position].score_b < file[i].buffer[file[i].position].score_b)
+                        if (file[i].buffer[file[i].position].score_b < file[index].buffer[file[index].position].score_b)
                             index = i;
                         break;
                     case 5:
-                        if (strcmp(file[i].buffer[file[i].position].match_date, file[i].buffer[file[i].position].match_date))
+                        if (strcmp(file[i].buffer[file[i].position].match_date, file[index].buffer[file[index].position].match_date))
                             index = i;
                         break;
                     case 6:
-                        if (file[i].buffer[file[i].position].money_raised < file[i].buffer[file[i].position].money_raised)
+                        if (file[i].buffer[file[i].position].money_raised < file[index].buffer[file[index].position].money_raised)
                             index = i;
                         break;
                 }
@@ -183,17 +186,18 @@ int search_lowest(struct file *file, int file_qty, int K, struct lineContent *lo
     }
 
     if (index != -1) {
-
         *lowest = file[index].buffer[file[index].position];
+
+        file[index].position++;
 
         if (file[index].position == file[index].MAX_POSITION) {
             set_buffer(&file[index], K);
         }
 
         return 1;
-    } else {
-        return 0;
     }
+
+    return 0;
 }
 
 void save_file(char *name, struct lineContent *V, int length) {
@@ -257,8 +261,8 @@ void merge(char *name, int file_qty, int K, int sort_option) {
 
 void external_merge_sort(char *name, int pagination, int sort_option) {
     char new[30];
-    int file_qty = 6;
-    int K = pagination / (6 + 1);
+    int file_qty = 7;
+    int K = pagination / ceil(file_qty + 1);
 
     merge(name, file_qty, K, sort_option);
 
@@ -267,3 +271,8 @@ void external_merge_sort(char *name, int pagination, int sort_option) {
         // remove(new);
     }
 }
+
+
+
+
+

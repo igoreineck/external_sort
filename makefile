@@ -14,7 +14,8 @@ comparison.o: comparison.c
 
 clear:
 	rm -f *.o
-	# rm data/*
-
+	rm data/*
+	rm output.txt
+	
 run:
 	./app
